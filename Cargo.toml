@@ -1,7 +1,9 @@
 [package]
 name = "bible_ref"
+description = "A library for working with Bible references."
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 lazy_static = "1.4.0"
