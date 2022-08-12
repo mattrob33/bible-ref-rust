@@ -1,7 +1,8 @@
 use std::collections::HashSet;
 use crate::bible_ref::BibleRef;
 use crate::bible_ref_utils::num_verses_in_chapter;
-use crate::book::Book;
+use crate::book::Book::{self, *};
+use crate::corpus::Corpus;
 
 /// Represents a particular Bible version, such as the ESV, NA28, RVR, etc.
 pub struct BibleVersion {
@@ -44,4 +45,54 @@ impl BibleVersion {
 
         Some(num_verses)
     }
+
+    pub fn textus_receptus_bible(id: &str) -> BibleVersion {
+        BibleVersion {
+            id: String::from(id),
+            corpus: Corpus::bible(),
+            excluded_verses: HashSet::new()
+        }
+    }
+
+    /// Create a new `BibleVersion` based on the more modern textual base which omits
+    /// several verses included in the kjv / Textus Receptus.
+    pub fn modern_bible(id: &str) -> BibleVersion {
+        BibleVersion {
+            id: String::from(id),
+            corpus: Corpus::bible(),
+            excluded_verses: HashSet::from([
+                BibleRef { book: Matthew, chapter: 12, verse: 47 },
+                BibleRef { book: Matthew, chapter: 17, verse: 21 },
+                BibleRef { book: Matthew, chapter: 18, verse: 11 },
+                BibleRef { book: Matthew, chapter: 23, verse: 14 },
+                BibleRef { book: Mark, chapter: 7, verse: 16 },
+                BibleRef { book: Mark, chapter: 9, verse: 44 },
+                BibleRef { book: Mark, chapter: 9, verse: 46 },
+                BibleRef { book: Mark, chapter: 11, verse: 26 },
+                BibleRef { book: Mark, chapter: 15, verse: 28 },
+                BibleRef { book: Luke, chapter: 17, verse: 36 },
+                BibleRef { book: Luke, chapter: 22, verse: 44 },
+                BibleRef { book: Luke, chapter: 23, verse: 17 },
+                BibleRef { book: John, chapter: 5, verse: 4 },
+                BibleRef { book: Acts, chapter: 8, verse: 37 },
+                BibleRef { book: Acts, chapter: 15, verse: 34 },
+                BibleRef { book: Acts, chapter: 24, verse: 7 },
+                BibleRef { book: Acts, chapter: 28, verse: 29 },
+                BibleRef { book: Romans, chapter: 16, verse: 24 },
+                BibleRef { book: FirstJohn, chapter: 5, verse: 7 },
+            ])
+        }
+    }
 }
+
+impl BibleVersion {
+    pub fn kjv() -> BibleVersion { BibleVersion::textus_receptus_bible("kjv") }
+    pub fn nkjv() -> BibleVersion { BibleVersion::textus_receptus_bible("NKJV") }
+    pub fn esv() -> BibleVersion { BibleVersion::modern_bible("ESV") }
+    pub fn niv() -> BibleVersion { BibleVersion::modern_bible("NIV") }
+    pub fn nlt() -> BibleVersion { BibleVersion::modern_bible("NLT") }
+    pub fn csb() -> BibleVersion { BibleVersion::modern_bible("CSB") }
+    pub fn nasb() -> BibleVersion { BibleVersion::modern_bible("NASB") }
+
+}
+
