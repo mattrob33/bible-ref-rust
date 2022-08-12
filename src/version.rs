@@ -11,7 +11,7 @@ pub struct BibleVersion {
 
     /// The set of books included in this version of the Bible. For example, a Greek New Testament
     /// will only contain Matthew-Revelation.
-    corpus: HashSet<Book>,
+    corpus: Vec<Book>,
 
     /// Verses that are excluded from this version of the Bible.
     excluded_verses: HashSet<BibleRef>
@@ -46,6 +46,7 @@ impl BibleVersion {
         Some(num_verses)
     }
 
+    /// Create a new `BibleVersion` based on the Textus Receptus textual base.
     pub fn textus_receptus_bible(id: &str) -> BibleVersion {
         BibleVersion {
             id: String::from(id),
@@ -86,13 +87,59 @@ impl BibleVersion {
 }
 
 impl BibleVersion {
-    pub fn kjv() -> BibleVersion { BibleVersion::textus_receptus_bible("kjv") }
+    pub fn kjv() -> BibleVersion { BibleVersion::textus_receptus_bible("KJV") }
     pub fn nkjv() -> BibleVersion { BibleVersion::textus_receptus_bible("NKJV") }
+
     pub fn esv() -> BibleVersion { BibleVersion::modern_bible("ESV") }
     pub fn niv() -> BibleVersion { BibleVersion::modern_bible("NIV") }
     pub fn nlt() -> BibleVersion { BibleVersion::modern_bible("NLT") }
     pub fn csb() -> BibleVersion { BibleVersion::modern_bible("CSB") }
     pub fn nasb() -> BibleVersion { BibleVersion::modern_bible("NASB") }
 
+    pub fn na28() -> BibleVersion {
+        BibleVersion {
+            id: "NA28".to_string(),
+            corpus: Corpus::new_testament(),
+            excluded_verses: HashSet::new()
+        }
+    }
+
+    pub fn thgnt() -> BibleVersion {
+        BibleVersion {
+            id: "THGNT".to_string(),
+            corpus: {
+                vec![
+                    Matthew,
+                    Mark,
+                    Luke,
+                    John,
+                    Acts,
+                    James,
+                    FirstPeter,
+                    SecondPeter,
+                    FirstJohn,
+                    SecondJohn,
+                    ThirdJohn,
+                    Jude,
+                    Romans,
+                    FirstCorinthians,
+                    SecondCorinthians,
+                    Galatians,
+                    Ephesians,
+                    Philippians,
+                    Colossians,
+                    FirstThessalonians,
+                    SecondThessalonians,
+                    FirstTimothy,
+                    SecondTimothy,
+                    Titus,
+                    Philemon,
+                    Hebrews,
+                    Revelation
+                ]
+            },
+            excluded_verses: HashSet::new()
+        }
+    }
 }
 
