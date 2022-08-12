@@ -34,3 +34,8 @@ impl PartialOrd for BibleRef {
         return Some(self.cmp(other));
     }
 }
+
+pub struct BibleRefRange {
+    start: BibleRef,
+    end: BibleRef
+}
